@@ -1,6 +1,16 @@
 import java.util.*;
 
 
+
+/**********************************************************************
+ *  @author DEEPAK JAYAPRAKASH
+ *  
+ * This is a simple Library console to show case OOP paradigm
+ * It gives you an idea of getters and setters
+ * ArrayLists creation, addition, deletion and sorting of collections
+ * using Comparators are also shown here.
+ * 
+ **********************************************************************/
 class Book{
 	String name;
 	String Category;
@@ -13,6 +23,9 @@ class Book{
 		this.Category=Category;
 		this.pricePerDay=pricePerDay;
 	}
+	///////////////////////////////////////////////////
+	// Getters and setters
+	///////////////////////////////////////////////////
 	
 	public String getName() {
 		return name;
@@ -37,7 +50,7 @@ class Book{
 class Students{
 	String name;
 	String ID;
-	ArrayList<String> books=new ArrayList<String>();
+
 	
 	Students(){
 		
@@ -47,6 +60,10 @@ class Students{
 		this.ID=ID;
 		
 	}
+	
+///////////////////////////////////////////////////
+// Getters and setters
+///////////////////////////////////////////////////
 	public String getName() {
 		return name;
 	}
@@ -63,11 +80,30 @@ class Students{
 }
 
 
+/***
+ * Implemented the comparator class for Students sorting
+ *
+ */
+class compareStudents implements Comparator<Students>{
+
+	@Override
+	public int compare(Students o1, Students o2) {
+		if(o1.getName().compareTo(o2.getName())!=0)
+			return o1.getName().compareTo(o2.getName());
+	
+			return o1.getID().compareTo(o2.getID());
+		
+	}
+	
+}
+
 public class Library {
 	
 	private static Scanner sc;
    
-	
+	/*
+	 * Displays all books
+	 */
 	public static void displayBooks(ArrayList<Book> b){
 		Iterator<Book> i=b.iterator();
 		while(i.hasNext()){
@@ -77,6 +113,9 @@ public class Library {
 		
 	}
 	
+	/***
+	 * Displays all students
+	 */
 public static void displayStudents(ArrayList<Students> s){
 	
 	Iterator<Students> i=s.iterator();
@@ -105,7 +144,7 @@ public static void displayStudents(ArrayList<Students> s){
 		b.add(new Book("50 first dates","Romedy",(float) (3.50)));
 		
 		System.out.println("Choose an operation");
-		System.out.println(" 1. Display all registered students \n 2. Display all books \n 3. Add new Student \n 4. Add new Book");
+		System.out.println(" 1. Display all registered students \n 2. Display all books \n 3. Add new Student \n 4. Add new Book \n 5. More options");
 		int choice=sc.nextInt();
 		
 		switch(choice){
@@ -113,14 +152,18 @@ public static void displayStudents(ArrayList<Students> s){
 		case 2: displayBooks(b);break;
 		case 3: addStudent(s);displayStudents(s); break;
 		case 4: addBook(b);displayBooks(b);break;
-		case 5: System.out.println("More options");
+		case 5: sc.nextLine();
 			System.out.println("Choose an operation");
 			System.out.println(" 1. Display all registered students in sorted order ");
 			int choice2=sc.nextInt();
 			switch(choice2){
-			case 1: sortedStudents(s); break;
+			case 1: ArrayList<Students>temp=s; 
+					sortedStudents(temp); 
+					displayStudents(temp); 
+					break;
 			case 2: break;
 			}
+			break;
 		
 		default: System.out.println("Wrong Option");
 		}
@@ -128,8 +171,10 @@ public static void displayStudents(ArrayList<Students> s){
 	}
 
 	private static void sortedStudents(ArrayList<Students> s) {
-	//	Collections.sort(<Students> s);
+		Collections.sort(s,new compareStudents());
+	
 		Iterator<Students> i=s.iterator();
+		
 		while(i.hasNext()){
 			Students s1=i.next();
 			System.out.println("Name: "+s1.getName()+"\t ID:"+s1.getID());
